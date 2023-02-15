@@ -1,0 +1,179 @@
+.outfit-carousel-outside {
+  align-items: flex-start;
+  display: flex;
+  height: 475px;
+  margin-bottom: 1.5em;
+  max-height: 475px;
+  max-width: 100%;
+  position: relative;
+  overflow: visible;
+  width: 100%;
+}
+
+.outfit-carousel-inside {
+  align-items: flex-start;
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  padding: 0 5px;
+  scroll-behavior: smooth;
+}
+
+.add-card {
+  align-items: center;
+  background-color: #D4D2D14D;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  display: flex;
+  height: 90%;
+  justify-content: center;
+  max-height: 90%;
+  margin-left: 0;
+  min-width: 22%;
+  max-width: 22%;
+}
+
+.add-card:hover {
+  cursor: pointer;
+}
+
+.outfit-add {
+  color: #E60023;
+}
+
+.outfit-add:hover {
+  cursor: pointer;
+}
+
+/* SINGLE OUTFIT CARD */
+.outfit-item {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  height: 90%;
+  max-height: 90%;
+  margin: 0 2%;
+  min-width: 22%;
+  max-width: 22%;
+  position: relative;
+}
+
+.outfit-img-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 60%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+#outfitProduct0 {
+  margin-left: 0;
+}
+
+.rel-item {
+  height: 100%;
+}
+
+.outfit-img {
+  object-position: center;
+  object-fit: cover;
+  max-height: 200%;
+  max-width: 200%;
+}
+
+.outfit-card-text {
+  display: flex;
+  flex-direction: column;
+  height: 40%;
+  justify-content: space-evenly;
+  padding: 0 10px;;
+  width: 100%;
+}
+
+.remove-card {
+  background-color: #E60023;
+  border: 1px solid #E60023;
+  color: #F7F4F3;
+  padding: 5px 10px;
+  text-transform: uppercase;
+}
+
+.remove-card:hover {
+  background-color: #F7F4F3;
+  color: #E60023;
+}
+
+.outfit-name {
+  font-weight: 500;
+  margin-bottom: -10px;
+}
+
+.outfit-category {
+  color: #746F72;
+  font-size: .75em;
+  margin-bottom: -10px;
+}
+
+.outfit-orig-price {
+  align-items: center;
+  display: flex;
+}
+
+/* OVERHAUL EXTRAS */
+.scroll-btns-right {
+  align-items: center;
+  border-radius: 0 15px 15px 0;
+  display: flex;
+  height: 90%;
+  justify-content: center;
+  margin: 0 1em;
+  position: absolute;
+  right: -70px;
+  width: 5%;
+  z-index: 9;
+}
+
+.scroll-btns-left {
+  align-items: center;
+  border-radius: 15px 0 0 15px;
+  display: flex;
+  height: 90%;
+  justify-content: center;
+  margin: 0 1em;
+  position: absolute;
+  left: -70px;
+  width: 5%;
+  z-index: 9;
+}
+
+.scrll-left {
+  transform: scaleX(-1);
+}
+
+.rel-scroll {
+  color: #E60023;
+}
+
+.rel-scroll:hover {
+  cursor: pointer;
+}
+
+.scroll-btns-right:hover {
+  background: rgb(255,255,255);
+  background: -moz-linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(230,0,35,0.22314863445378152) 100%);
+  background: -webkit-linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(230,0,35,0.22314863445378152) 100%);
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(230,0,35,0.22314863445378152) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#e60023",GradientType=1);
+  cursor: pointer;
+}
+
+.scroll-btns-left:hover {
+  background: rgb(255,255,255);
+  background: -moz-linear-gradient(270deg, rgba(255,255,255,0) 0%, rgba(230,0,35,0.22314863445378152) 100%);
+  background: -webkit-linear-gradient(270deg, rgba(255,255,255,0) 0%, rgba(230,0,35,0.22314863445378152) 100%);
+  background: linear-gradient(270deg, rgba(255,255,255,0) 0%, rgba(230,0,35,0.22314863445378152) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#e60023",GradientType=1);
+  cursor: pointer;
+}

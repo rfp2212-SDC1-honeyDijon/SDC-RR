@@ -1,0 +1,31 @@
+/* .img-carousel-outside {
+  align-items: center;
+  background-color: #0C1B33CC;
+  bottom: 0;
+  display: flex;
+  height: 40%;
+  justify-content: flex-start;
+  overflow: scroll;
+  position: absolute;
+  padding: 0 2%;
+  width: 100%;
+}
+
+.img-carousel-outside:hover {
+  cursor: pointer;
+}
+
+.img-carousel-container {
+  border: 1px solid #E60023;
+  margin: 0 3%;
+  height: 90%;
+  min-width: 20%;
+  overflow: hidden;
+  width: 20%;
+}
+
+.img-carousel-container img {
+  object-fit: cover;
+  transform: translateX(-50%);
+  max-width: 200%;
+} */
