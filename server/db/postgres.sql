@@ -3,7 +3,7 @@ CREATE DATABASE sdc1;
 \c sdc1;
 
 CREATE TABLE IF NOT EXISTS reviews (
-  id SERIAL PRIMARY KEY,
+  id serial PRIMARY KEY,
   product_id int,
   rating int,
   date timestamp,
@@ -12,27 +12,35 @@ CREATE TABLE IF NOT EXISTS reviews (
   recommend boolean DEFAULT false,
   reported boolean DEFAULT false,
   reviewer_name varchar,
-  email varchar,
+  reviewer_email varchar,
   response varchar,
   helpfulness int DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS photos (
-  id SERIAL PRIMARY KEY,
-  url VARCHAR,
-  review_id int
+CREATE TABLE IF NOT EXISTS reviews_photos (
+  id serial PRIMARY KEY,
+  review_id int,
+  url VARCHAR
 );
 
 -- name here will be size, width, fit, length, quality,comfort
 CREATE TABLE IF NOT EXISTS characteristics (
-  id SERIAL PRIMARY KEY,
+  id serial PRIMARY KEY,
+  product_id int,
   name VARCHAR
 );
 
 CREATE TABLE IF NOT EXISTS characteristics_reviews (
-  id SERIAL PRIMARY KEY,
+  id serial PRIMARY KEY,
+  characteristic_id int,
   review_id int,
-  characteristics_id int,
   value int
 );
 
+-- CREATE TABLE IF NOT EXISTS reviews_meta (
+--   id int not null auto_increment primary key,
+--   product_id int not null unique,
+--   ratings text,
+--   recommend text,
+--   characteristics text
+-- );
