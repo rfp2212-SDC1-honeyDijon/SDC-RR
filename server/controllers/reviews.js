@@ -3,10 +3,13 @@ const model = require('../models').reviews;
 module.exports = {
   getReviews: (req, res) => {
     model.getReviews(req.query)
-      .then(({ data }) => res.status(200).send(data))
+      .then((data) => {
+        console.log('get Reivews', data)
+        res.status(200).send(data.rows);
+      })
       .catch((err) => {
         console.error('err ctrl.getReviews: ', err);
-        res.status(500).send(err);
+        res.status(404).send(err);
       });
   },
 
@@ -20,11 +23,15 @@ module.exports = {
   },
 
   addReviews: (req, res) => {
+    //console.log('controller addreview',req.body);
     model.addReviews(req.body)
-      .then(({ config }) => res.status(201).send(config.data))
+      .then((results) => {
+        // console.log(results.rows);
+        res.status(201).send('post success');
+      })
       .catch((err) => {
         console.error('err ctrl.addReviews: ', err);
-        res.status(500).send(err);
+        res.status(404).send(err);
       });
   },
 

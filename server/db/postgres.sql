@@ -6,13 +6,13 @@ CREATE TABLE IF NOT EXISTS reviews (
   id serial PRIMARY KEY,
   product_id int,
   rating int,
-  date timestamp,
+  date varchar,
   summary varchar,
   body varchar,
   recommend boolean DEFAULT false,
   reported boolean DEFAULT false,
-  reviewer_name varchar,
-  reviewer_email varchar,
+  reviewer_name varchar(50),
+  reviewer_email varchar(50),
   response varchar,
   helpfulness int DEFAULT 0
 );
@@ -20,27 +20,31 @@ CREATE TABLE IF NOT EXISTS reviews (
 CREATE TABLE IF NOT EXISTS reviews_photos (
   id serial PRIMARY KEY,
   review_id int,
-  url VARCHAR
+  url VARCHAR(2048) not null
 );
 
 -- name here will be size, width, fit, length, quality,comfort
 CREATE TABLE IF NOT EXISTS characteristics (
   id serial PRIMARY KEY,
   product_id int,
-  name VARCHAR
+  name VARCHAR(50)
 );
 
-CREATE TABLE IF NOT EXISTS characteristics_reviews (
+CREATE TABLE IF NOT EXISTS characteristic_reviews (
   id serial PRIMARY KEY,
   characteristic_id int,
   review_id int,
   value int
 );
 
--- CREATE TABLE IF NOT EXISTS reviews_meta (
---   id int not null auto_increment primary key,
---   product_id int not null unique,
---   ratings text,
---   recommend text,
---   characteristics text
--- );
+create index product_id_idx on reviews (product_id);
+create index review_id_idx on reviews_photos(review_id);
+create index productId_idx on characteristics(product_id);
+create index reviewId_idx on characteristic_reviews(review_id);
+
+
+
+COPY characteristic_reviews FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/clean_characteristic_reviews.csv' WITH (FORMAT CSV, HEADER true);
+COPY characteristics FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/clean_characteristics.csv' WITH (FORMAT CSV, HEADER true);
+COPY reviews_photos FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/clean_reviews_photos.csv' WITH (FORMAT CSV, HEADER true);
+COPY reviews FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/clean_reviews.csv' WITH (FORMAT CSV, HEADER true);
