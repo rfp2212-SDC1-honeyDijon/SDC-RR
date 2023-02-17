@@ -1,0 +1,6 @@
+node_modules
+.env
+package-lock.json
+server/db/ETL/raw_data
+server/db/ETL/transformed_data
+server/db/mysqlSchema.sql
