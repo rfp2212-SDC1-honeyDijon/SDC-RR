@@ -4,8 +4,8 @@ module.exports = {
   getReviews: (req, res) => {
     model.getReviews(req.query)
       .then((data) => {
-        console.log('get Reivews', data)
-        res.status(200).send(data.rows);
+        console.log('get Reivews', data);
+        res.status(200).send(data);
       })
       .catch((err) => {
         console.error('err ctrl.getReviews: ', err);
@@ -15,7 +15,9 @@ module.exports = {
 
   getReviewMeta: (req, res) => {
     model.getReviewMeta(req.query)
-      .then(({ data }) => res.status(200).send(data))
+      .then((data) => {
+        res.status(200).send(data);
+      })
       .catch((err) => {
         console.error('err ctrl.getReviewMeta: ', err);
         res.status(500).send(err);
@@ -37,7 +39,11 @@ module.exports = {
 
   updateUseful: (req, res) => {
     model.updateUseful(req.params.review_id)
-      .then(() => res.status(201).send('Useful Updated'))
+      .then((data) => {
+        console.log('helpful', data.rows);
+        res.status(201).send('Useful Updated')
+
+      })
       .catch((err) => {
         console.error('err ctrl.updateUseful: ', err);
         res.status(204).send(err);
@@ -46,7 +52,10 @@ module.exports = {
 
   updateReport: (req, res) => {
     model.updateReport(req.params.review_id)
-      .then(() => res.status(201).send('Report Update'))
+      .then((data) => {
+        console.log('report', data.rows);
+        res.status(201).send('Report Update')
+      })
       .catch((err) => {
         console.error('err ctrl.updateReport: ', err);
         res.status(204).send(err);

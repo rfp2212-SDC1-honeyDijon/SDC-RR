@@ -1,6 +1,6 @@
-CREATE DATABASE sdc1;
+CREATE DATABASE sdc;
 
-\c sdc1;
+\c sdc;
 
 CREATE TABLE IF NOT EXISTS reviews (
   id serial PRIMARY KEY,
@@ -44,7 +44,15 @@ create index reviewId_idx on characteristic_reviews(review_id);
 
 
 
-COPY characteristic_reviews FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/clean_characteristic_reviews.csv' WITH (FORMAT CSV, HEADER true);
-COPY characteristics FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/clean_characteristics.csv' WITH (FORMAT CSV, HEADER true);
-COPY reviews_photos FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/clean_reviews_photos.csv' WITH (FORMAT CSV, HEADER true);
-COPY reviews FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/clean_reviews.csv' WITH (FORMAT CSV, HEADER true);
+COPY characteristic_reviews FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/transformed_data/clean_characteristic_reviews.csv' WITH (FORMAT CSV, HEADER true);
+COPY characteristics FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/transformed_data/clean_characteristics.csv' WITH (FORMAT CSV, HEADER true);
+COPY reviews_photos FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/transformed_data/clean_reviews_photos.csv' WITH (FORMAT CSV, HEADER true);
+COPY reviews FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/transformed_data/clean_reviews.csv' WITH (FORMAT CSV, HEADER true);
+
+
+select b.id, b.name, AVG(a.value) from characteristic_reviews a right join characteristics b on b.id = a.characteristic_id where b.product_id=40345 group by b.name, b.id;
+select b.name, AVG(a.value) from characteristic_reviews a right join characteristics b on b.id = a.characteristic_id where b.product_id=40345 group by b.name;
+select recommend, count(1) from reviews group by recommend;
+select rating, count(1) from reviews where product_id = 40344 group by rating
+select a.id as review_id, a.rating, a.summary, a.recommend, a.response, a.body, a.date, a.reviewer_name, a.helpfulness, (select array_to_json(coalesce(array_agg(photo), array[]::record[])) from (select p.id, p.url from reviews r inner join reviews_photos p on r.id = p.review_id where p.review_id = a.id) photo) as photos from reviews a where a.reported = false and a.product_id = 40344 order by helpfulness desc offset 3 limit 5;
+update reviews set helpfulness = helpfulness + 1 where id = $1;

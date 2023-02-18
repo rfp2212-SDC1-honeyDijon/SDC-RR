@@ -32,8 +32,8 @@ const csvStringifier = createCsvStringifier({
   },]
 });
 
-let readStream = fs.createReadStream('./raw_data/reviews.csv');
-let writeStream = fs.createWriteStream('./transformed_data/clean_reviews.csv');
+let readStream = fs.createReadStream('./raw_data/reviews_test.csv');
+let writeStream = fs.createWriteStream('./transformed_data/clean_reviews_test.csv');
 
 class CSVCleaner extends Transform {
   constructor(options) {
@@ -51,12 +51,15 @@ class CSVCleaner extends Transform {
     //filters out all non-number characters
     let onlyIdNumbers = chunk.id.replace(/\D/g, '');
     let onlyReviewIdNumbers = chunk.product_id.replace(/\D/g, '');
+    let cutSummary = chunk.summary.slice(0,60);
     chunk.id = onlyIdNumbers;
     chunk.review_id = onlyReviewIdNumbers;
+    chunk.summary = cutSummary;
 
 
     //use our csvStringifier to turn our chunk into a csv string
     chunk = csvStringifier.stringifyRecords([chunk]);
+    console.log('chunk', chunk);
 
     let commaCount = 0;
     let quoteInsertIndex;
