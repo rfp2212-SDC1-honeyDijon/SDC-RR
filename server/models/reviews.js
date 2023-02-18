@@ -77,26 +77,27 @@ module.exports = {
   },
 
   addReviews: (review) => {
-    let date = new Date.now();
+    let date = Date.now();
     let queryStr = 'insert into reviews (product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *';
     let values = [review.product_id, review.rating, date, review.summary, review.body, review.recommend, review.reported, review.reviewer_name, review.reviewer_email, review.response, review.helpfulness]
     let reviewsQuery = db.query(queryStr, values)
       .then((data) => {
         //console.log('add Reivews return data', data.rows);
-        let review_id = data.rows.id;
+        let review_id = data.rows[0].id;
+        //console.log(review_id);
         // Do we need to insert into the table characteristic????
         //let product_id = data.rows.product_id;
 
-        let query2 = 'insert into reviews_photos (review_id, url) values ($1, $2) RETURNING *';
+        let query2 = 'insert into reviews_photos (review_id, url) select review_id, url from unnest ($1::int[], $2::text[]) as p (review_id, url) RETURNING *';
         let value2 = [Array(review.photos.length).fill(review_id), review.photos];
         var photoQuery = db.query(query2, value2)
           .then((data) => {
-            console.log(data);
-            let query3 = 'insert into characteristic_reviews (characteristic_id, review_id, value) values ($1, $2, $3) RETURNING *';
+            console.log('photos', data.rows);
+            let query3 = 'insert into characteristic_reviews (characteristic_id, review_id, value) select characteristic_id, review_id, value from unnest ($1::int[], $2::int[], $3::int[]) as c (characteristic_id, review_id, value) RETURNING *';
             let value3 = [Object.keys(review.characteristics), Array(Object.keys(review.characteristics).length).fill(review_id), Object.values(review.characteristics)];
             var characteristicQuery = db.query(query3, value3)
               .then((data) => {
-                console.log(data);
+                console.log('characteristics', data.rows);
                 return data;
               })
             return characteristicQuery;

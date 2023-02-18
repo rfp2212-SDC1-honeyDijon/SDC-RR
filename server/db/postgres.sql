@@ -50,9 +50,10 @@ COPY reviews_photos FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/transf
 COPY reviews FROM '/Users/demi/Desktop/sprint/SDC-RR/server/db/ETL/transformed_data/clean_reviews.csv' WITH (FORMAT CSV, HEADER true);
 
 
-select b.id, b.name, AVG(a.value) from characteristic_reviews a right join characteristics b on b.id = a.characteristic_id where b.product_id=40345 group by b.name, b.id;
-select b.name, AVG(a.value) from characteristic_reviews a right join characteristics b on b.id = a.characteristic_id where b.product_id=40345 group by b.name;
-select recommend, count(1) from reviews group by recommend;
-select rating, count(1) from reviews where product_id = 40344 group by rating
-select a.id as review_id, a.rating, a.summary, a.recommend, a.response, a.body, a.date, a.reviewer_name, a.helpfulness, (select array_to_json(coalesce(array_agg(photo), array[]::record[])) from (select p.id, p.url from reviews r inner join reviews_photos p on r.id = p.review_id where p.review_id = a.id) photo) as photos from reviews a where a.reported = false and a.product_id = 40344 order by helpfulness desc offset 3 limit 5;
-update reviews set helpfulness = helpfulness + 1 where id = $1;
+-- select b.id, b.name, AVG(a.value) from characteristic_reviews a right join characteristics b on b.id = a.characteristic_id where b.product_id=40345 group by b.name, b.id;
+-- select b.name, AVG(a.value) from characteristic_reviews a right join characteristics b on b.id = a.characteristic_id where b.product_id=40345 group by b.name;
+-- select recommend, count(1) from reviews where product_id = 40344 group by recommend;
+-- select rating, count(1) from reviews where product_id = 40344 group by rating;
+-- select a.id as review_id, a.rating, a.summary, a.recommend, a.response, a.body, a.date, a.reviewer_name, a.helpfulness, (select array_to_json(coalesce(array_agg(photo), array[]::record[])) from (select p.id, p.url from reviews r inner join reviews_photos p on r.id = p.review_id where p.review_id = a.id) photo) as photos from reviews a where a.reported = false and a.product_id = 40344 order by helpfulness desc offset 3 limit 5;
+-- update reviews set helpfulness = helpfulness + 1 where id = 1;
+-- insert into reviews (product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness) values (40344,4,1674989326908,'test summay','I really like it this product is so so so so good',true,false,'rong','111@gmail.com','',8);
