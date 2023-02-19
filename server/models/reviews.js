@@ -25,7 +25,7 @@ module.exports = {
     } else if (sort === 'relevant') {
       sort = 'order by a.helpfulness desc, a.date desc';
     }
-    let queryStr = `select a.id as review_id, a.rating, a.summary, a.recommend, a.response, a.body, a.date, a.reviewer_name, a.helpfulness, (select array_to_json(coalesce(array_agg(photo), array[]::record[])) from (select p.id, p.url from reviews r inner join reviews_photos p on r.id = p.review_id where p.review_id = a.id) photo) as photos from reviews a where a.reported = false and a.product_id = ${product_id} ${sort} offset ${(page - 1) * count} limit ${count}`;
+    let queryStr = `select a.id as review_id, a.rating, a.summary, a.recommend, a.response, a.body, to_timestamp(a.date/1000) as date, a.reviewer_name, a.helpfulness, (select array_to_json(coalesce(array_agg(photo), array[]::record[])) from (select p.id, p.url from reviews r inner join reviews_photos p on r.id = p.review_id where p.review_id = a.id) photo) as photos from reviews a where a.reported = false and a.product_id = ${product_id} ${sort} offset ${(page - 1) * count} limit ${count}`;
     return db.query(queryStr).then((data) => {
       response.results = data.rows;
       return response;
