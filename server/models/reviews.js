@@ -40,40 +40,46 @@ module.exports = {
       characteristics: {}
     };
 
-    let ratings = 'select rating, count(1) from reviews where product_id = $1 group by rating';
-    let recommended = 'select recommend, count(1) from reviews where product_id = $1 group by recommend';
-    let characteristics = 'select AVG(a.value), b.id, b.name from characteristic_reviews a right join characteristics b on b.id = a.characteristic_id where b.product_id= $1 group by b.id,b.name';
-    let value = [product_id];
+    // let ratings = 'select rating, count(1) from reviews where product_id = $1 group by rating';
+    // let recommended = 'select recommend, count(1) from reviews where product_id = $1 group by recommend';
+    // let characteristics = 'select AVG(a.value), b.id, b.name from characteristic_reviews a right join characteristics b on b.id = a.characteristic_id where b.product_id= $1 group by b.id,b.name';
+    // let value = [product_id];
 
-    return db.query(ratings, value)
-      .then((data) => {
-        //console.log(data.rows);
-        data.rows.forEach((row) => {
-          response.ratings[row.rating] = row.count;
-        })
+    // return db.query(ratings, value)
+    //   .then((data) => {
+    //     //console.log(data.rows);
+    //     data.rows.forEach((row) => {
+    //       response.ratings[row.rating] = row.count;
+    //     })
 
-        return db.query(recommended, value)
-          .then((data) => {
-            //console.log('recommend', data.rows);
-            data.rows.forEach((row) => {
-              response.recommended[row.recommend] = row.count;
-            })
+    //     return db.query(recommended, value)
+    //       .then((data) => {
+    //         //console.log('recommend', data.rows);
+    //         data.rows.forEach((row) => {
+    //           response.recommended[row.recommend] = row.count;
+    //         })
 
-            return db.query(characteristics, value)
-              .then((data) => {
-                console.log('characteristics', data.rows);
-                data.rows.forEach((row) => {
-                  response.characteristics[row.name] = {};
-                  response.characteristics[row.name].id = row.id;
-                  response.characteristics[row.name].value = row.avg;
-                })
-                return response;
-                // console.log(response);
-              })
-          })
-      }).catch((err) => {
-        console.error('get meta err', err);
-      });
+    //         return db.query(characteristics, value)
+    //           .then((data) => {
+    //             console.log('characteristics', data.rows);
+    //             data.rows.forEach((row) => {
+    //               response.characteristics[row.name] = {};
+    //               response.characteristics[row.name].id = row.id;
+    //               response.characteristics[row.name].value = row.avg;
+    //             })
+    //             return response;
+    //             // console.log(response);
+    //           })
+    //       })
+    //   }).catch((err) => {
+    //     console.error('get meta err', err);
+    //   });
+    var queryString1 = `WITH ratings_d AS ( SELECT product_id, rating, count(1) as frequency FROM reviews WHERE product_id = $1 AND reported = false GROUP BY product_id, rating ), recommended_d AS ( SELECT product_id, recommend, count(1) as frequency FROM reviews WHERE product_id = $1 AND reported = false GROUP BY product_id, recommend ), characteristic_d AS ( SELECT c.product_id, c."name", jsonb_build_object('id', c.id, 'value', AVG(cr."value")::text) AS avgvalue FROM characteristic_reviews cr JOIN reviews r ON r.id = cr.review_id AND r.reported = false AND r.product_id = $1 JOIN characteristics c ON cr.characteristic_id = c.id WHERE c.product_id = $1 GROUP BY c.product_id, c.id, c."name" )`;
+    var queryString2 = `SELECT ratings_d.product_id::text, jsonb_object_agg(ratings_d.rating, ratings_d.frequency::text) AS ratings, jsonb_object_agg(recommended_d.recommend, recommended_d.frequency::text) AS recommended, jsonb_object_agg(characteristic_d.name, characteristic_d.avgvalue) AS characteristics FROM ratings_d JOIN recommended_d ON ratings_d.product_id = recommended_d.product_id JOIN characteristic_d ON ratings_d.product_id = characteristic_d.product_id GROUP BY ratings_d.product_id`;
+    var queryString = queryString1 + queryString2;
+    return db.query(queryString, [product_id]).then((data)=>{
+      return data.rows[0];
+    });
   },
 
   addReviews: (review) => {

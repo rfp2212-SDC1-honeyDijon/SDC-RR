@@ -1,27 +1,49 @@
+const Redis = require('ioredis');
 const model = require('../models').reviews;
 
+const redis = new Redis({
+  'port': 6379,
+  'host': '127.0.0.1'
+})
 module.exports = {
-  getReviews: (req, res) => {
-    model.getReviews(req.query)
+  getReviews: async (req, res) => {
+    let cacheEntry = await redis.get(`reviews: ${req.query.product_id}`);
+    //console.log('cache', cacheEntry);
+    if(cacheEntry){
+      cacheEntry = JSON.parse(cacheEntry);
+      res.status(200).send(cacheEntry);
+    }else{
+      model.getReviews(req.query)
       .then((data) => {
-        console.log('get Reivews', data);
+        //console.log('get Reivews', data);
+        redis.set(`reviews: ${req.query.product_id}`, JSON.stringify(data));
         res.status(200).send(data);
       })
       .catch((err) => {
         console.error('err ctrl.getReviews: ', err);
         res.status(404).send(err);
       });
+
+    }
+
   },
 
-  getReviewMeta: (req, res) => {
-    model.getReviewMeta(req.query)
+  getReviewMeta: async (req, res) => {
+    let cacheEntry = await redis.get(`reviews meta: ${req.query.product_id}`);
+    if(cacheEntry){
+      cacheEntry = JSON.parse(cacheEntry);
+      res.status(200).send(cacheEntry);
+    }else{
+      model.getReviewMeta(req.query)
       .then((data) => {
+        redis.set(`reviews meta: ${req.query.product_id}`, JSON.stringify(data));
         res.status(200).send(data);
       })
       .catch((err) => {
         console.error('err ctrl.getReviewMeta: ', err);
         res.status(500).send(err);
       });
+    }
   },
 
   addReviews: (req, res) => {
@@ -40,7 +62,7 @@ module.exports = {
   updateUseful: (req, res) => {
     model.updateUseful(req.params.review_id)
       .then((data) => {
-        console.log('helpful', data.rows);
+        //console.log('helpful', data.rows);
         res.status(201).send('Useful Updated')
 
       })
@@ -53,7 +75,7 @@ module.exports = {
   updateReport: (req, res) => {
     model.updateReport(req.params.review_id)
       .then((data) => {
-        console.log('report', data.rows);
+        //console.log('report', data.rows);
         res.status(201).send('Report Update')
       })
       .catch((err) => {

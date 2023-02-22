@@ -3,7 +3,7 @@ const {Client, Pool} = require('pg');
 const db = new Client({
   host: 'localhost',
   port: 5432,
-  database:'sdc1'
+  database:'sdc'
 });
 
 db.connect(((err)=>{
