@@ -26,16 +26,16 @@ const BASE_URL = 'http://localhost:3000/api';
 
 export default () => {
   let id = Math.floor(Math.random() * 5774952) + 1;
-  http.batch([
-    ['GET', `${BASE_URL}/reviews?product_id=${id}`],
-    ['GET', `${BASE_URL}/reviews/meta?product_id=${id}`]
-  ]);
+  // http.batch([
+  //   ['GET', `${BASE_URL}/reviews?product_id=${id}`],
+  //   ['GET', `${BASE_URL}/reviews/meta?product_id=${id}`]
+  // ]);
   // http.get(`${BASE_URL}/reviews?product_id=${id}`)
-  // http.get(`${BASE_URL}/reviews/meta?product_id=${id}`)
+  http.get(`${BASE_URL}/reviews/meta?product_id=${id}`)
   sleep(1);
 };
 export function handleSummary(data) {
   return {
-    "redis_twoRequests_1000users.html": htmlReport(data)
+    "redis_meta_1000users.html": htmlReport(data)
   }
 }

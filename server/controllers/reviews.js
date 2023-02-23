@@ -1,14 +1,11 @@
-const Redis = require('ioredis');
+const {redis} = require('../db/redis.js');
 const model = require('../models').reviews;
 
-const redis = new Redis({
-  'port': 6379,
-  'host': '127.0.0.1'
-})
+
 module.exports = {
   getReviews: async (req, res) => {
     let cacheEntry = await redis.get(`reviews: ${req.query.product_id}`);
-    //console.log('cache', cacheEntry);
+    //console.log('reviews', cacheEntry);
     if(cacheEntry){
       cacheEntry = JSON.parse(cacheEntry);
       res.status(200).send(cacheEntry);
@@ -16,27 +13,27 @@ module.exports = {
       model.getReviews(req.query)
       .then((data) => {
         //console.log('get Reivews', data);
-        redis.set(`reviews: ${req.query.product_id}`, JSON.stringify(data));
+        redis.set(`reviews: ${req.query.product_id}`, JSON.stringify(data), 'EX', process.env.REDISTTL);
         res.status(200).send(data);
       })
       .catch((err) => {
         console.error('err ctrl.getReviews: ', err);
         res.status(404).send(err);
       });
-
     }
 
   },
 
   getReviewMeta: async (req, res) => {
     let cacheEntry = await redis.get(`reviews meta: ${req.query.product_id}`);
+    //console.log('meta', cacheEntry);
     if(cacheEntry){
       cacheEntry = JSON.parse(cacheEntry);
       res.status(200).send(cacheEntry);
     }else{
       model.getReviewMeta(req.query)
       .then((data) => {
-        redis.set(`reviews meta: ${req.query.product_id}`, JSON.stringify(data));
+        redis.set(`reviews meta: ${req.query.product_id}`, JSON.stringify(data), 'EX', process.env.REDISTTL);
         res.status(200).send(data);
       })
       .catch((err) => {

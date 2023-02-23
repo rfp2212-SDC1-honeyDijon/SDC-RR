@@ -98,12 +98,12 @@ module.exports = {
         let value2 = [Array(review.photos.length).fill(review_id), review.photos];
         var photoQuery = db.query(query2, value2)
           .then((data) => {
-            console.log('photos', data.rows);
+            //console.log('photos', data.rows);
             let query3 = 'insert into characteristic_reviews (characteristic_id, review_id, value) select characteristic_id, review_id, value from unnest ($1::int[], $2::int[], $3::int[]) as c (characteristic_id, review_id, value) RETURNING *';
             let value3 = [Object.keys(review.characteristics), Array(Object.keys(review.characteristics).length).fill(review_id), Object.values(review.characteristics)];
             var characteristicQuery = db.query(query3, value3)
               .then((data) => {
-                console.log('characteristics', data.rows);
+                //console.log('characteristics', data.rows);
                 return data;
               })
             return characteristicQuery;
