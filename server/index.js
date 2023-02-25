@@ -21,6 +21,9 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get(`/${process.env.LOADER_IO}`, (req, res)=>{
+  res.send(process.env.LOADER_IO);
+})
 app.use('/api', router);
 
 app.listen(PORT);
