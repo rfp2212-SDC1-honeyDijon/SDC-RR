@@ -20,7 +20,7 @@
 **GET** `/reviews/meta` returns a review metadata for a given product<br>
 **POST** `/reviews` add a review for a given product<br>
 **PUT** `/reviews/review_id/report` updates a review to show it was reported<br>
-**PUT** `/reviews/review_id/helpful` update a review to show it was found helpful<<be>
+**PUT** `/reviews/review_id/helpful` update a review to show it was found helpful<br>
 
 
 
