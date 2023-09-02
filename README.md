@@ -1,10 +1,10 @@
-# Ratings and Reviews API Service
+## Ratings and Reviews API Service
 - Design and optimization of a backend system to a set of microservices for an e-commerce web application.
 - Responsible for the Ratings & Reviews API that supports the frontend Reviews module which allows users to view and search reviews, add reviews, like or report reviews.
 
 
 
-# Tech Stack:<br>
+## Tech Stack:<br>
 <a href="">![-Node](https://img.shields.io/badge/Node.js-339933.svg?style=for-the-badge&logo=nodedotjs&logoColor=white)</a>
 <a href="">![-Express](https://img.shields.io/badge/Express-000000.svg?style=for-the-badge&logo=Express&logoColor=white)</a>
 <a href="">![-Postgresql](https://img.shields.io/badge/PostgreSQL-4169E1.svg?style=for-the-badge&logo=PostgreSQL&logoColor=white)</a>
@@ -30,5 +30,16 @@
 | RPS | 1000 | 1000|
 | Latency | <1s | 66ms|
 | Error rate | <1% | <1%|
+
+
+## Optimizations <br>
+**Server optimizations** <br>
+- Horizontal scaling with 1 load balancer and 2 server instances (total of 3 AWS EC2 T2 micro instances)
+- Load balancer configurations: `keepalive_requests` and Nginx caching
+
+
+**Other optimizations** <br>
+- Database optimizations with indices (query time <50ms)
+- Server optimizations with Redis caching
 
 
