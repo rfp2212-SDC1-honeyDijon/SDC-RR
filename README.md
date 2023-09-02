@@ -15,12 +15,13 @@
 
 ## API Endpoints <br>
 
-### Questions <br>
+### Reviews <br>
 **GET** `/reviews` retrieves a list of (non-reported) reviews for a particular product<br>
 **GET** `/reviews/meta` returns a review metadata for a given product<br>
 **POST** `/reviews` add a review for a given product<br>
-**PUT** `/reviews/review_id/report` updates a review to show it was reported<be>
+**PUT** `/reviews/review_id/report` updates a review to show it was reported<br>
 **PUT** `/reviews/review_id/helpful` update a review to show it was found helpful<<be>
+
 
 
 ## Performance Summary & Stress Testing
